@@ -21,6 +21,11 @@ app.get('/', (req, res) => {
     res.render('index');
 })
 
+app.get('/signup', (req, res) => {
+
+    res.render('signup');
+})
+
 app.get('/login', (req, res) => {
 
     User.find((err, users) => {
@@ -55,10 +60,33 @@ app.post('/users', (req, res) => {
         res.send('Guardamos tus datos');
     }).catch(err => {
         console.log('error: ', err);
-        res.send('Error al guardar el usuario.');
+        res.send('Error al guardar la información.');
     })
     
     // res.send('Datos recibidos');
+})
+
+app.post('/sessions', async (req, res) => {
+    const { email, password } = req.body;
+    // User.findOne({email, password})
+    //     .then(user => {
+    //         console.log('sessions then: ', user);
+    //         res.send('login de usuario');
+    //     })
+    //     .catch(err => {
+    //         console.log('sessions error: ', err);
+    //         res.send('Error al guardar la información.');            
+    //     })
+
+    try {
+        const user = await User.findOne({email, password});
+        console.log('el usuario es: ', user)
+    } catch (err) {
+        console.log('paso un error: ', err);
+        res.send('se hayo un error, revisar logs');
+    }
+
+    res.send('usuario logueado');
 })
 
 app.listen(port, hostname, () => {

@@ -1,24 +1,10 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
+const User = require('./models/user').User;
 
 const app = express();
 const hostname = '127.0.0.1';
 const port = 3000;
-
-mongoose.connect('mongodb://localhost/fotos', { 
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
-    });
-
-const userSchemaJSON = {
-    email:String,
-    password:String
-}
-
-const user_schema = Schema(userSchemaJSON);
-const User = mongoose.model('User', user_schema);
 
 
 // se puedne agregar varios archivos

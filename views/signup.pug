@@ -16,6 +16,9 @@ block contenido
         div.form-group
           label(for="password_confirmation") Confirmar contraseña
           input.form-control(type="password", name="password_confirmation", placeholder="Confirmar contraseña", id="password_confirmation")
-        div(class="form-group")
-          button.btn.btn-primary.w-100(type='submit') Entrar
+        div.row.align-items-center
+          div.col-6
+            button.btn.btn-info.w-100(type='submit') Registrarse
+          div.col-6.text-right
+            a(href='/login') Ya tengo cuenta
     

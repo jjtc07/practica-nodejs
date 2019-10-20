@@ -97,7 +97,7 @@ app.post('/sessions', async (req, res) => {
         const user = await User.findOne({email, password});
         req.session.user_id = user._id;
         res.redirect('/app');
-        console.log('el usuario es: ', user)
+        // console.log('el usuario es: ', user)
     } catch (err) {
         console.log('paso un error: ', err);
         res.send('se hayo un error, revisar logs');

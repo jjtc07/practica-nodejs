@@ -1,5 +1,6 @@
 extends ./layout.pug
 block contenido
+  h1.text-center.mt-5 Iniciar Sesión
   form(action="/sessions" method="POST")
     div.row.justify-content-center.mt-5
       div.col-3
@@ -9,6 +10,9 @@ block contenido
         div.form-group
           label(for="password") Contraseña
           input.form-control(type="password", name="password", placeholder="Contraseña", id="password")
-        div(class="form-group")
-          button.btn.btn-primary.w-100(type='submit') Entrar
+        div.row.align-items-center
+          div.col-6
+            button.btn.btn-info.w-100(type='submit') Entrar
+          div.col-6.text-right
+            a(href='/signup') No tengo cuenta
   

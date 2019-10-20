@@ -28,20 +28,35 @@ app.get('/login', (req, res) => {
         console.log('usuarios: ', users);
         res.render('login');
     })
+
+    // User.findById('5dac9b0d4d7133b1dceb97ec', (err, user) => {
+    //     console.log('user error: ', err);
+    //     console.log('user data: ', user);
+    // })
     
     // res.render('login');
 })
 
 app.post('/users', (req, res) => {
-    const {email, password} = req.body
+    const {email, password, password_confirmation, username} = req.body
     console.log('email: ', email);
     console.log('password: ', password);
+    console.log('password_confirmation: ', password_confirmation);
+    console.log('username: ', username);
 
-    const user = new User({email: email, password, password});
+    const user = new User({
+        email,
+        password,
+        password_confirmation,
+        username,
+    });
 
     user.save().then(() => {
         res.send('Guardamos tus datos');
-    });
+    }).catch(err => {
+        console.log('error: ', err);
+        res.send('Error al guardar el usuario.');
+    })
     
     // res.send('Datos recibidos');
 })

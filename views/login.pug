@@ -4,11 +4,18 @@ block contenido
         div.row.justify-content-center.mt-5
             div.col-3
                 div.form-group
+                    label(for="username") Usuario
+                    input.form-control(type="text", name="username", placeholder="Usuario", id="username")
+                div.form-group
+                div.form-group
                     label(for="email") Email
                     input.form-control(type="text", name="email", placeholder="Email", id="email")
                 div.form-group
                     label(for="password") Contraseña
                     input.form-control(type="password", name="password", placeholder="Contraseña", id="password")
+                div.form-group
+                    label(for="password_confirmation") Confirmar contraseña
+                    input.form-control(type="password", name="password_confirmation", placeholder="Confirmar contraseña", id="password_confirmation")
                 div(class="form-group")
                     button.btn.btn-primary.w-100(type='submit') Entrar
         

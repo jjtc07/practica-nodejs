@@ -1,10 +1,14 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-// const session = require('express-session');
-const cookieSession = require('cookie-session');
+const session = require('express-session');
+// const cookieSession = require('cookie-session');
 const router_app = require('./router_app');
 const session_middleware = require('./middlewares/session');
-var methodOverride = require('method-override')
+const methodOverride = require('method-override')
+const redis = require('redis')
+const RedisStore = require('connect-redis')(session);
+
+
 const User = require('./models/user').User;
 
 const app = express();
@@ -41,10 +45,24 @@ app.use(methodOverride(function (req, res) {
 
 //     // }
 // }))
-app.use(cookieSession({
-    name: 'session',
-    keys: ['llave-1', 'llave-2'],
-}))
+
+//utilizando cookies para el manejo de sesiones
+// app.use(cookieSession({
+//     name: 'session',
+//     keys: ['llave-1', 'llave-2'],
+// }))
+
+// utilizando Redis para el manejo de sesiones
+let client = redis.createClient()
+app.use(
+  session({
+    store: new RedisStore({ client }),
+    secret: 'keyboard cat',
+    resave: false,
+    saveUninitialized: false,
+  })
+)
+//////////////////////////////////////////////////////////////////////////////////
 
 app.set('view engine', 'pug');
 

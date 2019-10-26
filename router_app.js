@@ -64,7 +64,7 @@ router.route('/imagenes/:id')
 
 router.route('/imagenes')
       .get( async (req, res) => { // index
-        const imagenes = await Imagen.find({creator: res.locals.user._id});
+        const imagenes = await Imagen.find();
         res.render('app/imagenes', {imagenes});
       })
       .post( async (req, res) => { // store

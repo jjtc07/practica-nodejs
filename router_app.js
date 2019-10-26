@@ -1,4 +1,6 @@
 const express = require('express');
+const Imagen = require('./models/imagenes').Imagen;
+
 const router = express.Router();
 
 router.get('/', (req, res) => {
@@ -14,11 +16,19 @@ router.get('/imagenes/new', (req, res) => { // create
 
 router.get('/imagenes/:id/edit', (req, res) => { // edit
 
-});
+});``
 
 router.route('/imagenes/:id')
-      .get((req, res) => { // show
-
+      .get( async (req, res) => { // show
+        try {
+          const {id} = req.params;
+          const imagen = await Imagen.findById(id);
+  
+          res.render('app/imagenes/show', {imagen});
+        } catch (err) {
+          console.log('error al mostrar imagen: ', err)
+          res.send('error al mostrar imagen');
+        }
       })
       .put((req, res) => { // update
 
@@ -31,8 +41,17 @@ router.route('/imagenes')
       .get((req, res) => { // index
 
       })
-      .post((req, res) => { // store
+      .post( async (req, res) => { // store
+        const {title} = req.body;
 
+        try {
+          const imagen = await Imagen.create({title,});
+          res.redirect(`imagenes/${imagen._id}`)
+          res.send('se guardo correctamente')
+        } catch (err) {
+          console.log('error al guardar imagen: ', err);
+          res.send('error al guardar imagen');
+        }
       })
 
 

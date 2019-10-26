@@ -33,6 +33,8 @@ router.route('/imagenes/:id')
 
           // se puede obtener la imagen de la siguiente manera luego de refactorizar 
           // const imagen = res.locals.imagen;
+
+
           res.render('app/imagenes/show');
         } catch (err) {
           console.log('error al mostrar imagen: ', err)
@@ -62,19 +64,22 @@ router.route('/imagenes/:id')
 
 router.route('/imagenes')
       .get( async (req, res) => { // index
-        const imagenes = await Imagen.find();
+        const imagenes = await Imagen.find({creator: res.locals.user._id});
         res.render('app/imagenes', {imagenes});
       })
       .post( async (req, res) => { // store
-        const {title} = req.body;
-
         try {
-          const imagen = await Imagen.create({title,});
-          // res.redirect(`imagenes/${imagen._id}`)
+          const {title} = req.body;
+          const { user } = res.locals;
+          await Imagen.create({
+            title, 
+            creator: user._id
+          });
           res.redirect(`imagenes`)
         } catch (err) {
           console.log('error al guardar imagen: ', err);
-          res.send('error al guardar imagen');
+          // res.send('error al guardar imagen');
+          res.redirect(`/app/imagenes/new`)
         }
       })
 

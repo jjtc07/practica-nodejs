@@ -1,5 +1,6 @@
 const express = require('express');
 const Imagen = require('./models/imagenes').Imagen;
+const findImagenMiddleware = require('./middlewares/findImage');
 
 const router = express.Router();
 
@@ -9,40 +10,45 @@ router.get('/', (req, res) => {
   // res.render('login');
 })
 
+router.all('/imagenes/:id*', findImagenMiddleware );
 
 router.get('/imagenes/new', (req, res) => { // create
   res.render('app/imagenes/new');
 });
 
 router.get('/imagenes/:id/edit', async (req, res) => { // edit
-  const {id} = req.params;
-  const imagen = await Imagen.findById(id);
+  // const {id} = req.params;
+  // const imagen = await Imagen.findById(id);
 
-  res.render('app/imagenes/edit', {imagen});
+  // res.render('app/imagenes/edit', {imagen});
+  res.render('app/imagenes/edit');
 });
 
 router.route('/imagenes/:id')
-      .get( async (req, res) => { // show
+      .get( (req, res) => { // show
         try {
-          const {id} = req.params;
-          const imagen = await Imagen.findById(id);
-  
-          res.render('app/imagenes/show', {imagen});
+          // const {id} = req.params;
+          // const imagen = await Imagen.findById(id);
+          // res.send('orueba');
+
+          // se puede obtener la imagen de la siguiente manera luego de refactorizar 
+          // const imagen = res.locals.imagen;
+          res.render('app/imagenes/show');
         } catch (err) {
           console.log('error al mostrar imagen: ', err)
           res.send('error al mostrar imagen');
         }
       })
       .put( async (req, res) => { // update
-        const {id} = req.params;
-        const imagen = await Imagen.findById(id);
+        // const {id} = req.params;
+        // const imagen = await Imagen.findById(id);
         const { title } = req.body;
+        const imagen = res.locals.imagen;
         imagen.title = title;
         await imagen.save();
         res.redirect('/app/imagenes');
       })
       .delete( async (req, res) => { // delete
-
         try {
           const {id} = req.params;
           // const imagen = await Imagen.findById(id);

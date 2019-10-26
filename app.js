@@ -1,8 +1,10 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const session = require('express-session');
+// const session = require('express-session');
+const cookieSession = require('cookie-session');
 const router_app = require('./router_app');
 const session_middleware = require('./middlewares/session');
+var methodOverride = require('method-override')
 const User = require('./models/user').User;
 
 const app = express();
@@ -18,14 +20,30 @@ app.use(express.static('public'))
 app.use(bodyParser.json()); // para leer parametros json application/json
 app.use(bodyParser.urlencoded({extended: true}) ); // 
 
-// sessiones
-app.use(session({
-    secret: 'jdhgjgj3g3t65378u3bguyt37ut3',
-    resave: false,
-    saveUninitialized: false,
-    // genid: req => {
+// para soportar otros metodos http
+// app.use(methodOverride('X-HTTP-Method-Override'))
+app.use(methodOverride(function (req, res) {
+    if (req.body && typeof req.body === 'object' && '_method' in req.body) {
+        // look in urlencoded POST bodies and delete it
+        var method = req.body._method
+        delete req.body._method
+        return method
+    }
+}))
+  
 
-    // }
+// sessiones
+// app.use(session({
+//     secret: 'jdhgjgj3g3t65378u3bguyt37ut3',
+//     resave: false,
+//     saveUninitialized: false,
+//     // genid: req => {
+
+//     // }
+// }))
+app.use(cookieSession({
+    name: 'session',
+    keys: ['llave-1', 'llave-2'],
 }))
 
 app.set('view engine', 'pug');

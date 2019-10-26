@@ -7,4 +7,16 @@ html(lang="es")
         link(rel="stylesheet", href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css")
         title ..:: Proyecto ::..
     body
+        nav.navbar.navbar-expand-lg.navbar-dark.bg-dark
+            div.collapse.navbar-collapse
+                ul.navbar-nav.mr-auto
+                    li.nav-item
+                        a.nav-link.active(href="/") Inicio
+                    li.nav-item
+                        a.nav-link.active(href="/app/imagenes/new") Subír imagen
+                    li.nav-item
+                        a.nav-link.active(href="/app/imagenes") Mis imagenes
+                    //- li.nav-item
+                    //-     a.nav-link.active(href="#") 
+        
         block contenido

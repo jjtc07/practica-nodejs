@@ -1,0 +1,18 @@
+extends ../../layout.pug
+block contenido
+  h1.text-center.mt-5 Subír imagen
+  form(action=`/app/imagenes/${imagen._id}` method="POST")
+    input(type="hidden" name="_method" value="PUT")
+
+    div.row.justify-content-center.mt-5
+      div.col-3
+        div.form-group
+          label(for="title") Título
+          input.form-control(type="text", name="title", placeholder="Título", id="title", value=`${imagen.title}`)
+        div.custom-file.mb-3
+          input.custom-file-input(type="file", name="archivo", placeholder="Archivo", id="archivo", lang="es")
+          label.custom-file-label(for="archivo") Archivo
+        div.row.align-items-center
+          div.col-12
+            button.btn.btn-info.w-100(type='submit') Subir
+  

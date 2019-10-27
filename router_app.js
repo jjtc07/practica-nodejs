@@ -2,6 +2,10 @@ const express = require('express');
 const Imagen = require('./models/imagenes').Imagen;
 const findImagenMiddleware = require('./middlewares/findImage');
 
+///////////////////////////////////
+const redis = require('redis');
+const client = redis.createClient();
+
 const router = express.Router();
 
 router.get('/', async (req, res) => {
@@ -35,7 +39,6 @@ router.route('/imagenes/:id')
 
           // se puede obtener la imagen de la siguiente manera luego de refactorizar 
           // const imagen = res.locals.imagen;
-
 
           res.render('app/imagenes/show');
         } catch (err) {
@@ -73,10 +76,13 @@ router.route('/imagenes')
         try {
           const {title} = req.body;
           const { user } = res.locals;
-          await Imagen.create({
+          const imagen = await Imagen.create({
             title, 
             creator: user._id
           });
+
+          // publicando la imagen por el socket
+          client.publish('images', imagen.toString() );
           res.redirect(`imagenes`)
         } catch (err) {
           console.log('error al guardar imagen: ', err);

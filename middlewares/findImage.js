@@ -7,15 +7,9 @@ module.exports = async (req, res, next) => {
 
     if (id !== 'new') {
       const imagen = await Imagen.findById(id).populate('creator').exec();
-      console.log('comparando data imagen: ', imagen);
-      console.log('comparando imagen: ', imagen != null);
-
-
-      console.log('ckeck user : ', ownerCheck(imagen, req, res));
 
       if (imagen != null && ownerCheck(imagen, req, res) ) {
         res.locals = { imagen };    
-        // res.redirect('http://google.com/')
       } else {
         res.redirect('/app')
       }
@@ -29,9 +23,6 @@ module.exports = async (req, res, next) => {
       //     res.redirect('/app')
       //   }
       // });
-
-
-      console.log('imagen creator: ', imagen);
     }
 
     next();

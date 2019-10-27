@@ -4,8 +4,7 @@ module.exports = (image, req, res) => {
   try {
     // true = si tienes permisos
     // false = no tienes permisos
-
-
+    
     if (req.method === 'GET' && req.path.indexOf('edit') < 0 ) {
       return true;
     }

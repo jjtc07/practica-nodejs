@@ -8,17 +8,38 @@ const methodOverride = require('method-override')
 const redis = require('redis')
 const RedisStore = require('connect-redis')(session);
 
-
 const User = require('./models/user').User;
 
 const app = express();
 const hostname = '127.0.0.1';
 const port = 3000;
 
+// utilizando Redis para el manejo de sesiones
+let client = redis.createClient()
+const sessionMiddleware = session({
+    store: new RedisStore({ client }),
+    secret: 'keyboard cat',
+    resave: false,
+    saveUninitialized: false,
+})
+
+app.use(sessionMiddleware)
+//////////////////////////////////////////////////////////////////////////////////
+
+// configuracion para socket.io ///////////
+const http = require('http');
+const realtime = require('./realtime');
+const server = http.Server(app);
+
+realtime(server, sessionMiddleware)
+///////////
+
 
 // se puedne agregar varios archivos
 // app.use('/static', express.static('public'))
-app.use(express.static('public'))
+// app.use(express.static('public'))
+app.use(express.static(__dirname + '/public'));
+
 
 // middleware bodyParser 
 app.use(bodyParser.json()); // para leer parametros json application/json
@@ -51,18 +72,6 @@ app.use(methodOverride(function (req, res) {
 //     name: 'session',
 //     keys: ['llave-1', 'llave-2'],
 // }))
-
-// utilizando Redis para el manejo de sesiones
-let client = redis.createClient()
-app.use(
-  session({
-    store: new RedisStore({ client }),
-    secret: 'keyboard cat',
-    resave: false,
-    saveUninitialized: false,
-  })
-)
-//////////////////////////////////////////////////////////////////////////////////
 
 app.set('view engine', 'pug');
 
@@ -145,6 +154,6 @@ app.post('/sessions', async (req, res) => {
 app.use('/app', session_middleware);
 app.use('/app', router_app);
 
-app.listen(port, hostname, () => {
+server.listen(port, hostname, () => {
     console.log(`Server running at http://${hostname}:${port}/`);
 });

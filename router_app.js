@@ -4,10 +4,12 @@ const findImagenMiddleware = require('./middlewares/findImage');
 
 const router = express.Router();
 
-router.get('/', (req, res) => {
+router.get('/', async (req, res) => {
   // buscar el usuario logueado
-  res.render('app/home');
+  // res.render('app/home');
   // res.render('login');
+  const imagenes = await Imagen.find();
+  res.render('app/imagenes', {imagenes});
 })
 
 router.all('/imagenes/:id*', findImagenMiddleware );

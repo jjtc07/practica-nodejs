@@ -6,7 +6,7 @@ block contenido
     for imagen in imagenes
       .col-4.mb-2
         .card
-          img.card-img-top(src="..." alt="...")
+          img.card-img-top(src="https://picsum.photos/200/300" alt="..." style="height: 200px" )
           .card-body
             a.text-decoration-none.text-dark(href=`/app/imagenes/${imagen._id}`)
               h5.card-title= imagen.title
@@ -15,3 +15,5 @@ block contenido
             form(action=`/app/imagenes/${imagen._id}` method="POST" style="display: inline-block;")
               input(type="hidden" name="_method" value="DELETE")              
               button.btn.btn-danger.ml-1(type="submit" ) Eliminar
+
+  <script src="/js/client.js"></script>

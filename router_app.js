@@ -39,6 +39,8 @@ router.route('/imagenes/:id')
 
           // se puede obtener la imagen de la siguiente manera luego de refactorizar 
           // const imagen = res.locals.imagen;
+          
+          // client.publish('images', JSON.stringify(res.locals.imagen) );
 
           res.render('app/imagenes/show');
         } catch (err) {
@@ -82,7 +84,7 @@ router.route('/imagenes')
           });
 
           // publicando la imagen por el socket
-          client.publish('images', imagen.toString() );
+          client.publish('images', JSON.stringify(imagen) );
           res.redirect(`imagenes`)
         } catch (err) {
           console.log('error al guardar imagen: ', err);

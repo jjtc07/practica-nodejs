@@ -12,6 +12,9 @@ module.exports = (server, sessionMiddleware)  => {
   client.on('message', (channel, message) => {
     console.log('se publico en el canal: ', message);
     
+    if (channel == 'images') {
+      io.emit('new image', message);
+    }
   })
 
   io.sockets.on('connection', (socket) => {

@@ -2,7 +2,7 @@ extends ../../layout.pug
 block contenido
   h1.text-center.mt-2.mb-5 Mis Imágenes
   
-  .row
+  .row(id="content-images")
     for imagen in imagenes
       .col-4.mb-2
         .card
@@ -13,7 +13,21 @@ block contenido
             a.btn.btn-primary(href=`/app/imagenes/${imagen._id}/edit`) Editar
 
             form(action=`/app/imagenes/${imagen._id}` method="POST" style="display: inline-block;")
-              input(type="hidden" name="_method" value="DELETE")              
+              input(type="hidden" name="_method" value="DELETE")
               button.btn.btn-danger.ml-1(type="submit" ) Eliminar
 
-  <script src="/js/client.js"></script>
+  script(src="/js/handlebars.js")
+  script( id="image-template" type="text/x-handlebars-template" )
+    .col-4.mb-2
+      .card
+        img.card-img-top(src="https://picsum.photos/200/300" alt="..." style="height: 200px" )
+        .card-body
+          a.text-decoration-none.text-dark(href="/app/imagenes/{{_id}}")
+            h5.card-title {{title}}
+          a.btn.btn-primary(href=`/app/imagenes/{{_id}}/edit`) Editar
+
+          form(action=`/app/imagenes/{{_id}}` method="POST" style="display: inline-block;")
+            input(type="hidden" name="_method" value="DELETE")
+            button.btn.btn-danger.ml-1(type="submit" ) Eliminar
+  script(src="/js/client.js")
+
